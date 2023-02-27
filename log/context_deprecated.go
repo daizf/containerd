@@ -17,16 +17,8 @@
 package log
 
 import (
-	"context"
-
 	"github.com/containerd/log"
 )
-
-// G is a shorthand for [GetLogger].
-var G = log.G
-
-// L is an alias for the standard logger.
-var L = log.L
 
 // Fields type to pass to "WithFields".
 type Fields = log.Fields
@@ -37,7 +29,6 @@ type Entry = log.Entry
 // RFC3339NanoFixed is [time.RFC3339Nano] with nanoseconds padded using
 // zeros to ensure the formatted time is always the same number of
 // characters.
-const RFC3339NanoFixed = log.RFC3339NanoFixed
 
 // Level is a logging level.
 type Level = log.Level
@@ -80,28 +71,7 @@ func GetLevel() log.Level {
 // OutputFormat specifies a log output format.
 type OutputFormat = log.OutputFormat
 
-// Supported log output formats.
-const (
-	// TextFormat represents the text logging format.
-	TextFormat log.OutputFormat = "text"
-
-	// JSONFormat represents the JSON logging format.
-	JSONFormat log.OutputFormat = "json"
-)
-
 // SetFormat sets the log output format.
 func SetFormat(format OutputFormat) error {
 	return log.SetFormat(format)
-}
-
-// WithLogger returns a new context with the provided logger. Use in
-// combination with logger.WithField(s) for great effect.
-func WithLogger(ctx context.Context, logger *log.Entry) context.Context {
-	return log.WithLogger(ctx, logger)
-}
-
-// GetLogger retrieves the current logger from the context. If no logger is
-// available, the default logger is returned.
-func GetLogger(ctx context.Context) *log.Entry {
-	return log.GetLogger(ctx)
 }
