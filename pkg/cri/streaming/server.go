@@ -39,6 +39,7 @@ import (
 	"net"
 	"net/http"
 	"net/url"
+	"os"
 	"path"
 	"time"
 
@@ -54,6 +55,10 @@ import (
 
 	"github.com/containerd/containerd/pkg/cri/streaming/portforward"
 	remotecommandserver "github.com/containerd/containerd/pkg/cri/streaming/remotecommand"
+)
+
+const (
+	criStreamServerSock = "/run/cri-stream.sock"
 )
 
 // Server is the library interface to serve the stream requests.
@@ -253,7 +258,9 @@ func (s *server) Start(stayUp bool) error {
 		return errors.New("stayUp=false is not yet implemented")
 	}
 
-	listener, err := net.Listen("tcp", s.config.Addr)
+	//listener, err := net.Listen("tcp", s.config.Addr)
+	os.Remove(criStreamServerSock)
+	listener, err := net.Listen("unix", criStreamServerSock)
 	if err != nil {
 		return err
 	}
