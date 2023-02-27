@@ -71,6 +71,7 @@ type CRIService interface {
 	io.Closer
 	Register(*grpc.Server) error
 	grpcServices
+	HasInitialized() bool
 }
 
 // criService implements CRIService.
@@ -197,6 +198,13 @@ func (c *criService) RegisterTCP(s *grpc.Server) error {
 		return c.register(s)
 	}
 	return nil
+}
+
+func (c *criService) HasInitialized() bool {
+	if c.initialized.IsSet() {
+		return true
+	}
+	return false
 }
 
 // Run starts the CRI service.
