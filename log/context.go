@@ -18,8 +18,8 @@ package log
 
 import (
 	"context"
-
 	"github.com/sirupsen/logrus"
+	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 var (
@@ -30,8 +30,22 @@ var (
 	G = GetLogger
 
 	// L is an alias for the standard logger.
-	L = logrus.NewEntry(logrus.StandardLogger())
+	L *logrus.Entry
 )
+
+func init() {
+	logger := logrus.New()
+	hook := &lumberjack.Logger{
+		Filename:   "/var/log/eci-launcher/containerd.log",
+		MaxSize:    100,
+		MaxBackups: 2,
+		MaxAge:     10,
+		Compress:   true,
+		LocalTime:  true,
+	}
+	logger.SetOutput(hook)
+	L = logrus.NewEntry(logger)
+}
 
 type (
 	loggerKey struct{}
