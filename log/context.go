@@ -30,7 +30,7 @@ var (
 	G = GetLogger
 
 	// L is an alias for the standard logger.
-	L = logrus.NewEntry(logrus.StandardLogger())
+	L *logrus.Entry
 )
 
 func init() {

@@ -265,7 +265,8 @@ func (s *server) Start(stayUp bool) error {
 		return err
 	}
 	// Use the actual address as baseURL host. This handles the "0" port case.
-	s.config.BaseURL.Host = listener.Addr().String()
+	//s.config.BaseURL.Host = listener.Addr().String()
+	s.config.BaseURL.Host = "unix"
 	if s.config.TLSConfig != nil {
 		return s.server.ServeTLS(listener, "", "") // Use certs from TLSConfig.
 	}
